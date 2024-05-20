@@ -37,7 +37,7 @@ function subcourse_supports($feature) {
         }
     }
 
-    switch($feature) {
+    switch ($feature) {
         case FEATURE_GRADE_HAS_GRADE:
             return true;
         case FEATURE_MOD_INTRO:
@@ -71,7 +71,7 @@ function subcourse_supports($feature) {
  */
 function subcourse_add_instance(stdClass $subcourse) {
     global $CFG, $DB;
-    require_once($CFG->dirroot.'/mod/subcourse/locallib.php');
+    require_once($CFG->dirroot . '/mod/subcourse/locallib.php');
 
     $subcourse->timecreated = time();
 
@@ -116,7 +116,7 @@ function subcourse_add_instance(stdClass $subcourse) {
  */
 function subcourse_update_instance(stdClass $subcourse) {
     global $CFG, $DB;
-    require_once($CFG->dirroot.'/mod/subcourse/locallib.php');
+    require_once($CFG->dirroot . '/mod/subcourse/locallib.php');
 
     $cmid = $subcourse->coursemodule;
 
@@ -168,7 +168,7 @@ function subcourse_update_instance(stdClass $subcourse) {
  */
 function subcourse_delete_instance($id) {
     global $CFG, $DB;
-    require_once($CFG->libdir.'/gradelib.php');
+    require_once($CFG->libdir . '/gradelib.php');
 
     // Check the instance exists.
     if (!$subcourse = $DB->get_record("subcourse", ["id" => $id])) {
@@ -280,7 +280,7 @@ function mod_subcourse_cm_info_view(cm_info $cm) {
     global $CFG, $USER, $DB;
 
     if (isset($cm->customdata->coursepageprintgrade) && isset($cm->customdata->coursepageprintprogress)) {
-        $displayoptions = (object) [
+        $displayoptions = (object)[
             'coursepageprintgrade' => $cm->customdata->coursepageprintgrade,
             'coursepageprintprogress' => $cm->customdata->coursepageprintprogress,
         ];
@@ -311,7 +311,7 @@ function mod_subcourse_cm_info_view(cm_info $cm) {
     }
 
     if ($displayoptions->coursepageprintgrade) {
-        require_once($CFG->libdir.'/gradelib.php');
+        require_once($CFG->libdir . '/gradelib.php');
 
         $grades = grade_get_grades($cm->course, 'mod', 'subcourse', $cm->instance, $USER->id);
         $currentgrade = (empty($grades->items[0]->grades)) ? null : reset($grades->items[0]->grades);
@@ -372,14 +372,14 @@ function subcourse_get_coursemodule_info($coursemodule) {
 
     $info = new cached_cm_info();
     $info->name = $subcourse->name;
-    $info->customdata = (object) [
+    $info->customdata = (object)[
         'coursepageprintgrade' => $subcourse->coursepageprintgrade,
         'coursepageprintprogress' => $subcourse->coursepageprintprogress,
     ];
 
     if ($subcourse->instantredirect && $subcourse->blankwindow) {
         $url = new moodle_url('/mod/subcourse/view.php', ['id' => $coursemodule->id, 'isblankwindow' => 1]);
-        $info->onclick = "window.open('".$url->out(false)."'); return false;";
+        $info->onclick = "window.open('" . $url->out(false) . "'); return false;";
     }
 
     if ($coursemodule->showdescription) {
@@ -422,10 +422,10 @@ function subcourse_grade_item_update($subcourse, $grades = null) {
  * @param int $userid specific user only, 0 means all
  * @param bool $nullifnone - not used
  */
-function subcourse_update_grades($subcourse, $userid=0, $nullifnone=true) {
+function subcourse_update_grades($subcourse, $userid = 0, $nullifnone = true) {
     global $CFG;
     require_once($CFG->dirroot . '/mod/subcourse/locallib.php');
-    require_once($CFG->libdir.'/gradelib.php');
+    require_once($CFG->libdir . '/gradelib.php');
 
     $refgrades = subcourse_fetch_refgrades($subcourse->id, $subcourse->refcourse, false, $userid, false);
 

@@ -31,7 +31,7 @@ use context_course;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot.'/mod/subcourse/locallib.php');
+require_once($CFG->dirroot . '/mod/subcourse/locallib.php');
 
 /**
  * Makes sure that all subcourse instances are marked as completed when they should be.
@@ -61,8 +61,8 @@ class check_completed_refcourses extends \core\task\scheduled_task {
      */
     public function execute() {
         global $CFG, $DB;
-        require_once($CFG->dirroot.'/lib/completionlib.php');
-        require_once($CFG->dirroot.'/completion/completion_completion.php');
+        require_once($CFG->dirroot . '/lib/completionlib.php');
+        require_once($CFG->dirroot . '/completion/completion_completion.php');
 
         if (!completion_info::is_enabled_for_site()) {
             mtrace("Completion tracking not enabled on this site");
@@ -116,7 +116,7 @@ class check_completed_refcourses extends \core\task\scheduled_task {
                 }
             }
 
-            mtrace(" ... checked ".count($cache[$subcourse->course]->participants)." users");
+            mtrace(" ... checked " . count($cache[$subcourse->course]->participants) . " users");
         }
 
         $rs->close();

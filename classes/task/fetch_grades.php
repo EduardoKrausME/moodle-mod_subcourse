@@ -27,7 +27,7 @@ namespace mod_subcourse\task;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot.'/mod/subcourse/locallib.php');
+require_once($CFG->dirroot . '/mod/subcourse/locallib.php');
 
 /**
  * Fetches remote grades into all subcourse instances
@@ -69,8 +69,8 @@ class fetch_grades extends \core\task\scheduled_task {
                 continue;
             }
 
-            mtrace("Subcourse {$subcourse->id}: fetching grades from course {$subcourse->refcourse} ".
-               "to course {$subcourse->course} ... ", "");
+            mtrace("Subcourse {$subcourse->id}: fetching grades from course {$subcourse->refcourse} " .
+                "to course {$subcourse->course} ... ", "");
             $result = subcourse_grades_update($subcourse->course, $subcourse->id, $subcourse->refcourse,
                 null, false, false, [], $subcourse->fetchpercentage);
 
@@ -79,7 +79,7 @@ class fetch_grades extends \core\task\scheduled_task {
                 mtrace("ok");
 
             } else {
-                mtrace("failed with error code ".$result);
+                mtrace("failed with error code " . $result);
             }
         }
 

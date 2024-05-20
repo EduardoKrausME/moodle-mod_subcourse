@@ -93,7 +93,7 @@ class observers {
      */
     public static function course_completed(\core\event\course_completed $event) {
         global $CFG, $DB;
-        require_once($CFG->dirroot.'/lib/completionlib.php');
+        require_once($CFG->dirroot . '/lib/completionlib.php');
 
         $courseid = $event->courseid;
         $userid = $event->relateduserid;

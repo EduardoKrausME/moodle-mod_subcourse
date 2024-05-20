@@ -57,8 +57,8 @@ class subcourse_grades_fetched extends \core\event\base {
      * @return string
      */
     public function get_description() {
-        return "The user with id '{$this->userid}' fetched grades from the course with id '{$this->other['refcourse']}' ".
-                "into the 'subcourse' activity with the course module id '{$this->contextinstanceid}'.";
+        return "The user with id '{$this->userid}' fetched grades from the course with id '{$this->other['refcourse']}' " .
+            "into the 'subcourse' activity with the course module id '{$this->contextinstanceid}'.";
     }
 
     /**

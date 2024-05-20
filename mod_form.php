@@ -25,8 +25,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot.'/mod/subcourse/locallib.php');
-require_once($CFG->dirroot.'/course/moodleform_mod.php');
+require_once($CFG->dirroot . '/mod/subcourse/locallib.php');
+require_once($CFG->dirroot . '/course/moodleform_mod.php');
 
 /**
  * Subcourse settings form
@@ -120,10 +120,10 @@ class mod_subcourse_mod_form extends moodleform_mod {
             $catlist = core_course_category::make_categories_list('', 0, ' / ');
 
             foreach ($mycourses as $mycourse) {
-                $courselabel = $catlist[$mycourse->category] . ' / ' . $mycourse->fullname.' ('.$mycourse->shortname.')';
+                $courselabel = $catlist[$mycourse->category] . ' / ' . $mycourse->fullname . ' (' . $mycourse->shortname . ')';
                 $options[$mycourse->id] = $courselabel;
                 if (empty($mycourse->visible)) {
-                    $hiddenlabel = ' '.get_string('hiddencourse', 'subcourse');
+                    $hiddenlabel = ' ' . get_string('hiddencourse', 'subcourse');
                     $options[$mycourse->id] .= $hiddenlabel;
                 }
             }
@@ -147,6 +147,7 @@ class mod_subcourse_mod_form extends moodleform_mod {
 
         $mform->addElement('checkbox', 'instantredirect', get_string('instantredirect', 'subcourse'));
         $mform->addHelpButton('instantredirect', 'instantredirect', 'subcourse');
+        $mform->setDefault('instantredirect', $config->coursepageenrol);
 
         $mform->addElement('checkbox', 'blankwindow', get_string('blankwindow', 'subcourse'));
         $mform->addHelpButton('blankwindow', 'blankwindow', 'subcourse');

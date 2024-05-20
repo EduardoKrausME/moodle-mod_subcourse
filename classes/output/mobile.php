@@ -46,7 +46,7 @@ class mobile {
     public static function main_view($args) {
         global $OUTPUT, $USER, $DB;
 
-        $args = (object) $args;
+        $args = (object)$args;
         $versionname = $args->appversioncode >= 3950 ? 'latest' : 'ionic3';
         $cm = get_coursemodule_from_id('subcourse', $args->cmid);
         $context = \context_module::instance($cm->id);

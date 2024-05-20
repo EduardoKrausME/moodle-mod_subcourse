@@ -29,7 +29,7 @@
  * @param int $oldversion the version we are upgrading from
  * @return bool true
  */
-function xmldb_subcourse_upgrade($oldversion=0) {
+function xmldb_subcourse_upgrade($oldversion = 0) {
     global $DB;
 
     $dbman = $DB->get_manager();

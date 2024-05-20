@@ -41,21 +41,21 @@
 }}
 <div class="row">
     {{#haspercentage}}
-    <div class="col-md">
-        <div class="subcourseinfo subcourseinfo-progress mb-3">
-            <div class="infotext">{{#str}} currentprogress, mod_subcourse, {{percentage}} {{/str}}</div>
-            <div class="subcourse-progress-bar">
-                <div style="width: {{percentage}}%"></div>
+        <div class="col-md">
+            <div class="subcourseinfo subcourseinfo-progress mb-3">
+                <div class="infotext">{{#str}} currentprogress, mod_subcourse, {{percentage}} {{/str}}</div>
+                <div class="subcourse-progress-bar">
+                    <div style="width: {{percentage}}%"></div>
+                </div>
             </div>
         </div>
-    </div>
     {{/haspercentage}}
 
     {{#hasstrgrade}}
-    <div class="col-md">
-        <div class="subcourseinfo subcourseinfo-grade mb-3">
-            <div  class="infotext">{{#str}} currentgrade, mod_subcourse, {{strgrade}} {{/str}}</div>
+        <div class="col-md">
+            <div class="subcourseinfo subcourseinfo-grade mb-3">
+                <div class="infotext">{{#str}} currentgrade, mod_subcourse, {{strgrade}} {{/str}}</div>
+            </div>
         </div>
-    </div>
     {{/hasstrgrade}}
 </div>

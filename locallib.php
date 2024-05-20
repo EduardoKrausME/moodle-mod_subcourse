@@ -24,7 +24,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->libdir.'/gradelib.php');
+require_once($CFG->libdir . '/gradelib.php');
 
 /**
  * Returns the list of courses the grades can be taken from
@@ -121,7 +121,7 @@ function subcourse_fetch_refgrades($subcourseid, $refcourseid, $gradeitemonly = 
         $context = context_module::instance($cm->id);
 
         $users = get_users_by_capability($context, 'mod/subcourse:begraded', 'u.id,u.lastname',
-                                         'u.lastname', '', '', '', '', false, true);
+            'u.lastname', '', '', '', '', false, true);
 
         foreach ($users as $user) {
             if ($userids && !in_array($user->id, $userids)) {
@@ -165,11 +165,11 @@ function subcourse_fetch_refgrades($subcourseid, $refcourseid, $gradeitemonly = 
 /**
  * Create or update grade item and grades for given subcourse
  *
- * @param int $courseid     ID of referencing course (the course containing the instance of
+ * @param int $courseid ID of referencing course (the course containing the instance of
  * subcourse)
- * @param int $subcourseid  ID of subcourse instance
- * @param int $refcourseid  ID of referenced course (the course to take grades from)
- * @param str $itemname     Set the itemname
+ * @param int $subcourseid ID of subcourse instance
+ * @param int $refcourseid ID of referenced course (the course to take grades from)
+ * @param str $itemname Set the itemname
  * @param bool $gradeitemonly If true, fetch only grade item info without grades
  * @param bool $reset Reset grades in gradebook
  * @param int|array $userids If fetching grades, limit only to this user(s), defaults to all.
@@ -177,7 +177,7 @@ function subcourse_fetch_refgrades($subcourseid, $refcourseid, $gradeitemonly = 
  * @return int GRADE_UPDATE_OK etc
  */
 function subcourse_grades_update($courseid, $subcourseid, $refcourseid, $itemname = null,
-        $gradeitemonly = false, $reset = false, $userids = [], $fetchpercentage = null) {
+                                 $gradeitemonly = false, $reset = false, $userids = [], $fetchpercentage = null) {
     global $DB;
 
     if (empty($refcourseid)) {

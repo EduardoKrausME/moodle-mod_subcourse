@@ -108,7 +108,7 @@ class restore_subcourse_activity_task extends restore_activity_task {
 
         // Fix old wrong uses (missing extension).
         $rules[] = new restore_log_rule('subcourse', 'view all', 'index?id={course}', null,
-                                        null, null, 'index.php?id={course}');
+            null, null, 'index.php?id={course}');
         $rules[] = new restore_log_rule('subcourse', 'view all', 'index.php?id={course}', null);
 
         return $rules;

@@ -22,9 +22,9 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require(__DIR__.'/../../config.php');
-require_once($CFG->dirroot.'/mod/subcourse/locallib.php');
-require_once($CFG->libdir.'/gradelib.php');
+require(__DIR__ . '/../../config.php');
+require_once($CFG->dirroot . '/mod/subcourse/locallib.php');
+require_once($CFG->libdir . '/gradelib.php');
 
 $id = required_param('id', PARAM_INT);
 $fetchnow = optional_param('fetchnow', 0, PARAM_INT);
@@ -80,10 +80,37 @@ if ($fetchnow && $refcourse) {
 
 subcourse_set_module_viewed($subcourse, $context, $course, $cm);
 
+$contextcourse = context_course::instance($course->id);
+$contextcourseref = context_course::instance($refcourse->id);
+if (!has_capability('moodle/course:view', $contextcourseref)) {
+
+    $enrol = $DB->get_record('enrol',
+        [
+            'courseid' => $course->id,
+            'enrol' => 'manual',
+        ]);
+    $testroleassignments = $DB->get_record('role_assignments',
+        [
+            'contextid' => $contextcourse->id,
+            'userid' => $USER->id
+        ]);
+    $userenrolments = $DB->get_record('user_enrolments',
+        [
+            'enrolid' => $enrol->id,
+            'userid' => $USER->id,
+        ]);
+    $roleid = isset($testroleassignments->roleid) ? $testroleassignments->roleid : 5;
+
+    $timestart = isset($userenrolments->timestart) ? $userenrolments->timestart : 0;
+    $timeend = isset($userenrolments->timeend) ? $userenrolments->timeend : 0;
+
+    \local_kopere_dashboard\util\enroll_util::enrol($refcourse, $USER, $timestart, $timeend, ENROL_INSTANCE_ENABLED, $roleid);
+}
+
 if ($refcourse && !empty($subcourse->instantredirect)) {
-    if (!has_capability('mod/subcourse:fetchgrades', $context)) {
-        redirect(new moodle_url('/course/view.php', ['id' => $refcourse->id]));
-    }
+    //if (!has_capability('mod/subcourse:fetchgrades', $context)) {
+    redirect(new moodle_url('/course/view.php', ['id' => $refcourse->id]));
+    //}
 }
 
 echo $OUTPUT->header();
@@ -124,7 +151,7 @@ if ($refcourse) {
     }
 
     if (has_all_capabilities(['gradereport/user:view', 'moodle/grade:view'], $refcoursecontext)
-            && $refcourse->showgrades && ($strgrade !== null)) {
+        && $refcourse->showgrades && ($strgrade !== null)) {
         echo html_writer::link(
             new moodle_url('/grade/report/user/index.php', ['id' => $refcourse->id]),
             get_string('gotorefcoursemygrades', 'subcourse', format_string($refcourse->fullname)),
