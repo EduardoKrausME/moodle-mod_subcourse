@@ -37,7 +37,7 @@ $subcourse = $DB->get_record('subcourse', ['id' => $cm->instance], '*', MUST_EXI
 $context = context_module::instance($cm->id);
 $coursecontext = context_course::instance($course->id);
 
-require_login($course, true, $cm);
+require_login($course);
 require_capability('mod/subcourse:view', $context);
 
 $PAGE->set_url(new moodle_url('/mod/subcourse/view.php', ['id' => $cm->id]));
@@ -46,10 +46,15 @@ $PAGE->set_heading($course->fullname);
 
 if (empty($subcourse->refcourse)) {
     $refcourse = false;
-
 } else {
     $refcourse = $DB->get_record('course', ['id' => $subcourse->refcourse], '*', IGNORE_MISSING);
 }
+
+if (!$refcourse->visible) {
+    $refcourse->visible = 1;
+    $DB->update_record('course', $refcourse);
+}
+
 
 if ($fetchnow && $refcourse) {
     require_sesskey();
@@ -83,7 +88,6 @@ subcourse_set_module_viewed($subcourse, $context, $course, $cm);
 $contextcourse = context_course::instance($course->id);
 $contextcourseref = context_course::instance($refcourse->id);
 if (!has_capability('moodle/course:view', $contextcourseref)) {
-
     $enrol = $DB->get_record('enrol',
         [
             'courseid' => $course->id,
@@ -104,18 +108,21 @@ if (!has_capability('moodle/course:view', $contextcourseref)) {
     $timestart = isset($userenrolments->timestart) ? $userenrolments->timestart : 0;
     $timeend = isset($userenrolments->timeend) ? $userenrolments->timeend : 0;
 
-    \local_kopere_dashboard\util\enroll_util::enrol($refcourse, $USER, $timestart, $timeend, ENROL_INSTANCE_ENABLED, $roleid);
+    \local_kopere_dashboard\util\enroll_util::enrol($refcourse, $USER, $timestart, $timeend, $roleid);
+
+    set_user_preference("block_myoverview_hidden_course_{$refcourse->id}", 1, $USER);
 }
 
-if ($refcourse && !empty($subcourse->instantredirect)) {
-    //if (!has_capability('mod/subcourse:fetchgrades', $context)) {
+$instantredirect = optional_param('instantredirect', false, PARAM_INT);
+if ($refcourse && ($subcourse->instantredirect || $instantredirect)) {
+    $_SESSION['return_course_id'] = $course->id;
+    $_SESSION['return_course_name'] = $course->fullname;
+    $_SESSION['refcourse_course_id'] = $refcourse->id;
+
     redirect(new moodle_url('/course/view.php', ['id' => $refcourse->id]));
-    //}
-}
+} else if ($refcourse) {
+    echo $OUTPUT->header();
 
-echo $OUTPUT->header();
-
-if ($refcourse) {
     $percentage = \core_completion\progress::get_course_progress_percentage($refcourse);
     $strgrade = subcourse_get_current_grade($subcourse, $USER->id);
 
@@ -135,7 +142,7 @@ if ($refcourse) {
     }
 
     echo html_writer::link(
-        new moodle_url('/course/view.php', ['id' => $refcourse->id]),
+        new moodle_url('/mod/subcourse/view.php', ['id' => $cm->id, 'instantredirect' => 1]),
         get_string('gotorefcourse', 'subcourse', format_string($refcourse->fullname)),
         ['class' => 'btn btn-primary', 'target' => $target]
     );
@@ -177,11 +184,15 @@ if ($refcourse) {
 
     // End of div.actionbuttons.
     echo html_writer::end_div();
+    echo $OUTPUT->footer();
 
 } else {
+    echo $OUTPUT->header();
+
     if (has_capability('mod/subcourse:fetchgrades', $context)) {
         echo $OUTPUT->notification(get_string('refcoursenull', 'subcourse'));
     }
+
+    echo $OUTPUT->footer();
 }
 
-echo $OUTPUT->footer();
