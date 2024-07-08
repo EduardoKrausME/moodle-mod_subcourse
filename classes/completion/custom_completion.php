@@ -32,9 +32,10 @@ class custom_completion extends \core_completion\activity_custom_completion {
      *
      * @param string $rule
      * @return integer
+     * @throws \dml_exception
      */
-    public function get_state(string $rule): int {
-        global $CFG, $DB;
+    public function get_state($rule) {
+        global $CFG, $DB, $USER;
         require_once($CFG->dirroot . '/completion/completion_completion.php');
 
         $this->validate_rule($rule);
@@ -43,22 +44,25 @@ class custom_completion extends \core_completion\activity_custom_completion {
 
         if (empty($subcourse->completioncourse)) {
             // The rule not enabled, return early.
-            return $type;
+            return COMPLETION_COMPLETE;
         }
 
         if (empty($subcourse->refcourse)) {
             // Misconfigured subcourse instance, behave as if was not enabled.
-            return $type;
+            return COMPLETION_COMPLETE;
         }
 
         // Check if the referenced course is completed.
-        $coursecompletion = new \completion_completion(['userid' => $this->userid, 'course' => $subcourse->refcourse]);
+        $coursecompletion = new \completion_completion();
+        $coursecompletion->userid = $USER->id;
+        $coursecompletion->course = $subcourse->refcourse;
 
-        return $coursecompletion->is_complete();
+        return $coursecompletion->is_complete() ? COMPLETION_COMPLETE : COMPLETION_INCOMPLETE;
     }
 
     /**
      * Fetch the list of custom completion rules that this module defines.
+     *
      * @return array
      */
     public static function get_defined_custom_rules(): array {
@@ -67,7 +71,9 @@ class custom_completion extends \core_completion\activity_custom_completion {
 
     /**
      * Returns an associative array of the descriptions of custom completion rules.
+     *
      * @return array
+     * @throws \coding_exception
      */
     public function get_custom_rule_descriptions(): array {
         return ['completioncourse' => get_string('completioncourse', 'subcourse')];
@@ -75,6 +81,7 @@ class custom_completion extends \core_completion\activity_custom_completion {
 
     /**
      * Returns an array of all completion rules, in the order they should be displayed to users.
+     *
      * @return array
      */
     public function get_sort_order(): array {

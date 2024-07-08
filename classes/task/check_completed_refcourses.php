@@ -28,6 +28,7 @@ namespace mod_subcourse\task;
 use completion_completion;
 use completion_info;
 use context_course;
+use moodle_exception;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -35,7 +36,6 @@ require_once($CFG->dirroot . '/mod/subcourse/locallib.php');
 
 /**
  * Makes sure that all subcourse instances are marked as completed when they should be.
- *
  * Normally, completed course triggers the subcourse completion automatically
  * via observing the event. This task is there for rechecking the completions to catch
  * up with courses that were completed in the past (and the event was missed).
@@ -49,6 +49,7 @@ class check_completed_refcourses extends \core\task\scheduled_task {
      * Returns a descriptive name for this task shown to admins
      *
      * @return string
+     * @throws \coding_exception
      */
     public function get_name() {
         return get_string('taskcheckcompletedrefcourses', 'mod_subcourse');
@@ -108,7 +109,9 @@ class check_completed_refcourses extends \core\task\scheduled_task {
             mtrace("Subcourse {$subcourse->id}: checking refcourse {$subcourse->refcourse} completions ... ");
 
             foreach (array_keys($cache[$subcourse->course]->participants) as $userid) {
-                $coursecompletion = new completion_completion(['userid' => $userid, 'course' => $subcourse->refcourse]);
+                $coursecompletion = new \completion_completion();
+                $coursecompletion->userid = $userid;
+                $coursecompletion->course = $subcourse->refcourse;
                 if ($coursecompletion->is_complete()) {
                     // Notify the subcourse to check the completion status.
                     mtrace(" - user {$userid}: has completed referenced course, checking subcourse completion");

@@ -80,9 +80,11 @@ $string['subcourse:view'] = 'View subcourse activity';
 $string['subcoursename'] = 'Subcourse name';
 $string['taskcheckcompletedrefcourses'] = 'Check referenced courses completion';
 $string['taskfetchgrades'] = 'Fetch subcourse grades';
-$string['completioncourse'] = 'Require course completed';
-$string['completioncourse_help'] = 'If enabled, the activity is considered complete when a student completes the referenced course.';
-$string['completioncourse_text'] = 'Student must complete the referenced course to complete this activity.';
+
+$string['completioncourse'] = 'Course completion required';
+$string['completioncourse_help'] = 'If enabled, the activity is considered complete when the student completes the referenced course.';
+$string['completioncourse_text'] = 'Students must complete the referenced course to complete this activity.';
+
 
 // Deprecated and no longer used.
 $string['gotocoursename'] = 'Go to the course <a href="{$a->href}">{$a->name}</a>';
