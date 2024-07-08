@@ -34,7 +34,7 @@ class custom_completion extends \core_completion\activity_custom_completion {
      * @return integer
      * @throws \dml_exception
      */
-    public function get_state($rule) {
+    public function get_state(string $rule): int {
         global $CFG, $DB, $USER;
         require_once($CFG->dirroot . '/completion/completion_completion.php');
 
