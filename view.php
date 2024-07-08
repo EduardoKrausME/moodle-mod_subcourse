@@ -88,29 +88,34 @@ subcourse_set_module_viewed($subcourse, $context, $course, $cm);
 $contextcourse = context_course::instance($course->id);
 $contextcourseref = context_course::instance($refcourse->id);
 if (!has_capability('moodle/course:view', $contextcourseref)) {
-    $enrol = $DB->get_record('enrol',
-        [
-            'courseid' => $course->id,
-            'enrol' => 'manual',
-        ]);
-    $testroleassignments = $DB->get_record('role_assignments',
-        [
-            'contextid' => $contextcourse->id,
-            'userid' => $USER->id,
-        ]);
-    $userenrolments = $DB->get_record('user_enrolments',
-        [
-            'enrolid' => $enrol->id,
-            'userid' => $USER->id,
-        ]);
-    $roleid = isset($testroleassignments->roleid) ? $testroleassignments->roleid : 5;
+    $config = get_config('mod_subcourse');
+    if ($config->coursepageenrol) {
+        $enrol = $DB->get_record('enrol',
+            [
+                'courseid' => $course->id,
+                'enrol' => 'manual',
+            ]);
+        $testroleassignments = $DB->get_record('role_assignments',
+            [
+                'contextid' => $contextcourse->id,
+                'userid' => $USER->id,
+            ]);
+        $userenrolments = $DB->get_record('user_enrolments',
+            [
+                'enrolid' => $enrol->id,
+                'userid' => $USER->id,
+            ]);
+        $roleid = isset($testroleassignments->roleid) ? $testroleassignments->roleid : 5;
 
-    $timestart = isset($userenrolments->timestart) ? $userenrolments->timestart : 0;
-    $timeend = isset($userenrolments->timeend) ? $userenrolments->timeend : 0;
+        $timestart = isset($userenrolments->timestart) ? $userenrolments->timestart : 0;
+        $timeend = isset($userenrolments->timeend) ? $userenrolments->timeend : 0;
 
-    \local_kopere_dashboard\util\enroll_util::enrol($refcourse, $USER, $timestart, $timeend, $roleid);
+        \local_kopere_dashboard\util\enroll_util::enrol($refcourse, $USER, $timestart, $timeend, $roleid);
 
-    set_user_preference("block_myoverview_hidden_course_{$refcourse->id}", 1, $USER);
+        if ($config->courseenrolhide) {
+            set_user_preference("block_myoverview_hidden_course_{$refcourse->id}", 1, $USER);
+        }
+    }
 }
 
 $instantredirect = optional_param('instantredirect', false, PARAM_INT);

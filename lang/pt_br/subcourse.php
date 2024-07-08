@@ -25,6 +25,11 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['settings:coursepageenrol'] = 'Matricular automaticamente?';
+$string['settings:coursepageenrol_desc'] = 'Caso marcado, o aluno é matriculado automaticamente no curso de destino antes de ser direcionado';
+$string['settings:courseenrolhide'] = 'Ocultar este novo curso?';
+$string['settings:courseenrolhide_desc'] = 'Caso marcado, este curso será ocultado da página meus Cursos';
+
 $string['completioncourse'] = 'Requer a conclusão do curso';
 $string['completioncourse_help'] = 'Se habilitado, a atividade é considerada concluída quando o estudante concluir o curso referenciado.';
 $string['completioncourse_text'] = 'Os estudantes devem concluir o curso referenciado para concluir esta atividade.';
