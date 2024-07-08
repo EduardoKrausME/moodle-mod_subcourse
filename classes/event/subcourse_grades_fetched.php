@@ -46,6 +46,7 @@ class subcourse_grades_fetched extends \core\event\base {
      * Return the event's human readable name.
      *
      * @return string
+     * @throws \coding_exception
      */
     public static function get_name() {
         return get_string('eventgradesfetched', 'subcourse');

@@ -41,7 +41,14 @@ class mobile {
      * Return the data for the CoreCourseModuleDelegate delegate.
      *
      * @param object $args
-     * @return object
+     *
+     * @return array
+     *
+     * @throws \coding_exception
+     * @throws \dml_exception
+     * @throws \moodle_exception
+     * @throws \require_login_exception
+     * @throws \required_capability_exception
      */
     public static function main_view($args) {
         global $OUTPUT, $USER, $DB;

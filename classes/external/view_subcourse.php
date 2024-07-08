@@ -60,8 +60,11 @@ class view_subcourse extends external_api {
      * Trigger the course module viewed event and update the module completion status.
      *
      * @param int $subcourseid subcourse instance id
+     *
      * @return array of warnings and status result
-     * @throws moodle_exception
+     *
+     * @throws \dml_exception
+     * @throws \moodle_exception
      */
     public static function execute($subcourseid) {
         global $CFG, $DB;

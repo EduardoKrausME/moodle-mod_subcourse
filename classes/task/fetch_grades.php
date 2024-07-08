@@ -41,6 +41,7 @@ class fetch_grades extends \core\task\scheduled_task {
      * Returns a descriptive name for this task shown to admins
      *
      * @return string
+     * @throws \coding_exception
      */
     public function get_name() {
         return get_string('taskfetchgrades', 'mod_subcourse');
@@ -50,6 +51,7 @@ class fetch_grades extends \core\task\scheduled_task {
      * Performs the task
      *
      * @throws moodle_exception on an error (the job will be retried)
+     * @throws \dml_exception
      */
     public function execute() {
         global $DB;

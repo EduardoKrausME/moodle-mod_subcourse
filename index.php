@@ -22,8 +22,8 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
-require_once(dirname(__FILE__) . '/lib.php');
+require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
+require_once(dirname(__FILE__).'/lib.php');
 
 $id = required_param('id', PARAM_INT);
 
@@ -55,7 +55,7 @@ if (!$subcourses = get_all_instances_in_course('subcourse', $course)) {
 $usesections = course_format_uses_sections($course->format);
 
 $timenow = time();
-$strsectionname = get_string('sectionname', 'format_' . $course->format);
+$strsectionname = get_string('sectionname', 'format_'.$course->format);
 $strname = get_string('subcoursename', 'subcourse');
 $strdesc = get_string('moduleintro');
 
@@ -63,11 +63,11 @@ $table = new html_table();
 $table->id = 'subcourseslist';
 
 if ($usesections) {
-    $table->head = array($strsectionname, $strname, $strdesc);
-    $table->align = array('center', 'left', 'left');
+    $table->head  = array ($strsectionname, $strname, $strdesc);
+    $table->align = array ('center', 'left', 'left');
 } else {
-    $table->head = array($strname, $strdesc);
-    $table->align = array('left', 'left');
+    $table->head  = array ($strname, $strdesc);
+    $table->align = array ('left', 'left');
 }
 
 foreach ($subcourses as $subcourse) {
