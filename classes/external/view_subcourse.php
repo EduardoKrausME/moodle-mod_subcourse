@@ -17,6 +17,7 @@
 /**
  * Provides {@see \mod_subcourse\external\view_subcourse} class.
  *
+ * @package     mod_subcourse
  * @copyright   2020 David Mudrák <david@moodle.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

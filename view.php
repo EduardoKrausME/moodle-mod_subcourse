@@ -63,7 +63,7 @@ if ($fetchnow && $refcourse) {
     $event = \mod_subcourse\event\subcourse_grades_fetched::create([
         'objectid' => $subcourse->id,
         'context' => $context,
-        'other' => ['refcourse' => $refcourse->id]
+        'other' => ['refcourse' => $refcourse->id],
     ]);
 
     $event->add_record_snapshot('course_modules', $cm);
@@ -96,7 +96,7 @@ if (!has_capability('moodle/course:view', $contextcourseref)) {
     $testroleassignments = $DB->get_record('role_assignments',
         [
             'contextid' => $contextcourse->id,
-            'userid' => $USER->id
+            'userid' => $USER->id,
         ]);
     $userenrolments = $DB->get_record('user_enrolments',
         [

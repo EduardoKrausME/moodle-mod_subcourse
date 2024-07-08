@@ -67,9 +67,7 @@ function subcourse_supports($feature) {
  * instance.
  *
  * @param stdClass $subcourse
- *
  * @return int The id of the newly inserted subcourse record
- *
  * @throws dml_exception
  */
 function subcourse_add_instance(stdClass $subcourse) {
@@ -115,9 +113,7 @@ function subcourse_add_instance(stdClass $subcourse) {
  * this function will update an existing instance with new data.
  *
  * @param stdClass $subcourse
- *
  * @return boolean success/failure
- *
  * @throws coding_exception
  * @throws dml_exception
  */
@@ -171,9 +167,7 @@ function subcourse_update_instance(stdClass $subcourse) {
  * and any data that depends on it.
  *
  * @param int $id Id of the module instance
- *
  * @return boolean success/failure
- *
  * @throws dml_exception
  */
 function subcourse_delete_instance($id) {
@@ -194,150 +188,6 @@ function subcourse_delete_instance($id) {
     return true;
 }
 
-///**
-// * Must return an array of user records (all data) who are participants
-// * for a given instance of subcourse. Must include every user involved
-// * in the instance, independient of his role (student, teacher, admin...)
-// * See other modules as example.
-// *
-// * @param int $subcourseid ID of an instance of this module
-// * @return mixed boolean/array of students
-// */
-//function subcourse_get_participants($subcourseid) {
-//    return false;
-//}
-//
-///**
-// * Return a small object with summary information about what a
-// * user has done with a given particular instance of this module
-// * Used for user activity reports.
-// * $return->time = the time they did it
-// * $return->info = a short text description
-// *
-// * @param stdClass $course The course record.
-// * @param stdClass $user The user record.
-// * @param cm_info|stdClass $mod The course module info object or record.
-// * @param stdClass $subcourse The subcourse instance record.
-// * @return null
-// */
-//function subcourse_user_outline($course, $user, $mod, $subcourse) {
-//    return true;
-//}
-//
-///**
-// * Print a detailed representation of what a user has done with
-// * a given particular instance of this module, for user activity reports.
-// *
-// * @param stdClass $course The course record.
-// * @param stdClass $user The user record.
-// * @param cm_info|stdClass $mod The course module info object or record.
-// * @param stdClass $subcourse The subcourse instance record.
-// * @return boolean
-// */
-//function subcourse_user_complete($course, $user, $mod, $subcourse) {
-//    return true;
-//}
-//
-///**
-// * Given a course and a time, this module should find recent activity
-// * that has occurred in subcourse activities and print it out.
-// * Return true if there was output, or false is there was none.
-// *
-// * @param stdClass $course
-// * @param bool $viewfullnames
-// * @param int $timestart
-// * @return boolean true if anything was printed, otherwise false
-// */
-//function subcourse_print_recent_activity($course, $viewfullnames, $timestart) {
-//    return false;
-//}
-//
-///**
-// * Is a scale used by the given subcourse instance?
-// *
-// * The subcourse itself does not generate grades so we always return
-// * false here in order not to block the scale removal.
-// *
-// * @param int $subcourseid id of an instance of this module
-// * @param int $scaleid
-// * @return bool
-// */
-//function subcourse_scale_used($subcourseid, $scaleid) {
-//    return false;
-//}
-//
-///**
-// * Is a scale used by some subcourse instance?
-// *
-// * The subcourse itself does not generate grades so we always return
-// * false here in order not to block the scale removal.
-// *
-// * @param int $scaleid
-// * @return boolean True if the scale is used by any subcourse
-// */
-//function subcourse_scale_used_anywhere($scaleid) {
-//    return false;
-//}
-
-///**
-// * This will provide summary info about the user's grade in the subcourse below the link on
-// * the course/view.php page
-// *
-// * @param cm_info $cm
-// * @return void
-// */
-//function mod_subcourse_cm_info_view(cm_info $cm) {
-//    global $CFG, $USER, $DB;
-//
-//    if (isset($cm->customdata->coursepageprintgrade) && isset($cm->customdata->coursepageprintprogress)) {
-//        $displayoptions = (object)[
-//            'coursepageprintgrade' => $cm->customdata->coursepageprintgrade,
-//            'coursepageprintprogress' => $cm->customdata->coursepageprintprogress,
-//        ];
-//
-//    } else {
-//        // This is unexpected - the customdata should be set in {@see subcourse_get_coursemodule_info()}.
-//        $displayoptions = $DB->get_record('subcourse', ['id' => $cm->instance], 'coursepageprintgrade, coursepageprintprogress');
-//    }
-//
-//    $html = '';
-//
-//    if ($displayoptions->coursepageprintprogress) {
-//        $sql = "SELECT r.*
-//                  FROM {course} r
-//                  JOIN {subcourse} s ON s.refcourse = r.id
-//                 WHERE s.id = :subcourseid";
-//
-//        $refcourse = $DB->get_record_sql($sql, ['subcourseid' => $cm->instance], IGNORE_MISSING);
-//        $percentage = null;
-//        if ($refcourse) {
-//            $percentage = \core_completion\progress::get_course_progress_percentage($refcourse);
-//        }
-//        if ($percentage !== null) {
-//            $percentage = floor($percentage);
-//            $html .= html_writer::tag('div', get_string('currentprogress', 'subcourse', $percentage),
-//                ['class' => 'contentafterlink']);
-//        }
-//    }
-//
-//    if ($displayoptions->coursepageprintgrade) {
-//        require_once($CFG->libdir . '/gradelib.php');
-//
-//        $grades = grade_get_grades($cm->course, 'mod', 'subcourse', $cm->instance, $USER->id);
-//        $currentgrade = (empty($grades->items[0]->grades)) ? null : reset($grades->items[0]->grades);
-//
-//        if (($currentgrade !== null) && isset($currentgrade->grade) && !($currentgrade->hidden)) {
-//            $strgrade = $currentgrade->str_grade;
-//            $html .= html_writer::tag('div', get_string('currentgrade', 'subcourse', $strgrade),
-//                ['class' => 'contentafterlink']);
-//        }
-//    }
-//
-//    if ($html !== '') {
-//        $cm->set_after_link($html);
-//    }
-//}
-
 /**
  * Mark the activity completed (if required) and trigger the course_module_viewed event.
  *
@@ -345,7 +195,6 @@ function subcourse_delete_instance($id) {
  * @param  stdClass $course course object
  * @param  stdClass $cm course module object
  * @param  stdClass $context context object
- *
  * @throws coding_exception
  */
 function subcourse_view($subcourse, $course, $cm, $context) {
@@ -369,7 +218,6 @@ function subcourse_view($subcourse, $course, $cm, $context) {
 
 /**
  * Return the action associated with the given calendar event, or null if there is none.
- *
  * This is used by block_myoverview in order to display the event appropriately. If null is returned then the event
  * is not displayed on the block.
  *
@@ -393,18 +241,15 @@ function mod_subcourse_core_calendar_provide_event_action(calendar_event $event,
  * Given a course_module object, this function returns any
  * "extra" information that may be needed when printing
  * this activity in a course listing.
- *
  * See {@see get_array_of_activities()} in course/lib.php
  *
  * @param object $coursemodule
- *
  * @return cached_cm_info info
- *
  * @throws dml_exception
  * @throws moodle_exception
  */
 function subcourse_get_coursemodule_info($coursemodule) {
-    global  $DB;
+    global $DB;
 
     $subcourse = $DB->get_record('subcourse', ['id' => $coursemodule->instance],
         'id, name, intro, introformat, instantredirect, blankwindow, coursepageprintgrade, coursepageprintprogress');

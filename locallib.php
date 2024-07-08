@@ -230,7 +230,7 @@ function subcourse_grades_update($courseid, $subcourseid, $refcourseid, $itemnam
             'itemtype' => 'mod',
             'itemmodule' => 'subcourse',
             'iteminstance' => $subcourseid,
-            'itemnumber' => 0
+            'itemnumber' => 0,
         ]);
 
         $gs = grade_grade::fetch_all(['itemid' => $gi->id]);

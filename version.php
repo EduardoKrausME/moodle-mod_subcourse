@@ -24,10 +24,10 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2024060800; //..
+$plugin->version = 2024060800; // Version.
 $plugin->component = 'mod_subcourse';
 $plugin->release = 2023122200;
 $plugin->maturity = MATURITY_STABLE;
-$plugin->requires = 2023042400; // Requires 4.2
+$plugin->requires = 2023042400; // Requires 4.2.
 
-$plugin->dependencies = array("local_kopere_dashboard" => 2023112400);
+$plugin->dependencies = ["local_kopere_dashboard" => 2023112400];

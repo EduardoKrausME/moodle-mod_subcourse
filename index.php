@@ -38,7 +38,7 @@ $PAGE->set_pagelayout('incourse');
 $PAGE->navbar->add(get_string('modulenameplural', 'subcourse'));
 
 $event = \mod_subcourse\event\course_module_instance_list_viewed::create([
-    'context' => context_course::instance($course->id)
+    'context' => context_course::instance($course->id),
 ]);
 $event->add_record_snapshot('course', $course);
 $event->trigger();
@@ -63,11 +63,11 @@ $table = new html_table();
 $table->id = 'subcourseslist';
 
 if ($usesections) {
-    $table->head  = array ($strsectionname, $strname, $strdesc);
-    $table->align = array ('center', 'left', 'left');
+    $table->head  = [$strsectionname, $strname, $strdesc];
+    $table->align = ['center', 'left', 'left'];
 } else {
-    $table->head  = array ($strname, $strdesc);
-    $table->align = array ('left', 'left');
+    $table->head  = [$strname, $strdesc];
+    $table->align = ['left', 'left'];
 }
 
 foreach ($subcourses as $subcourse) {
