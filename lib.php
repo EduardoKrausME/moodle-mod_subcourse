@@ -26,7 +26,9 @@
  * Returns the information if the module supports a feature
  *
  * @see plugin_supports() in lib/moodlelib.php
+ *
  * @param string $feature FEATURE_xx constant for requested feature
+ *
  * @return mixed true if the feature is supported, null if unknown
  */
 function subcourse_supports($feature) {
@@ -67,6 +69,7 @@ function subcourse_supports($feature) {
  * instance.
  *
  * @param stdClass $subcourse
+ *
  * @return int The id of the newly inserted subcourse record
  * @throws dml_exception
  */
@@ -113,6 +116,7 @@ function subcourse_add_instance(stdClass $subcourse) {
  * this function will update an existing instance with new data.
  *
  * @param stdClass $subcourse
+ *
  * @return boolean success/failure
  * @throws coding_exception
  * @throws dml_exception
@@ -167,6 +171,7 @@ function subcourse_update_instance(stdClass $subcourse) {
  * and any data that depends on it.
  *
  * @param int $id Id of the module instance
+ *
  * @return boolean success/failure
  * @throws dml_exception
  */
@@ -191,10 +196,11 @@ function subcourse_delete_instance($id) {
 /**
  * Mark the activity completed (if required) and trigger the course_module_viewed event.
  *
- * @param  stdClass $url url object
- * @param  stdClass $course course object
- * @param  stdClass $cm course module object
+ * @param  stdClass $url     url object
+ * @param  stdClass $course  course object
+ * @param  stdClass $cm      course module object
  * @param  stdClass $context context object
+ *
  * @throws coding_exception
  */
 function subcourse_view($subcourse, $course, $cm, $context) {
@@ -223,6 +229,7 @@ function subcourse_view($subcourse, $course, $cm, $context) {
  *
  * @param calendar_event $event
  * @param \core_calendar\action_factory $factory
+ *
  * @return \core_calendar\local\event\entities\action_interface|null
  */
 function mod_subcourse_core_calendar_provide_event_action(calendar_event $event, \core_calendar\action_factory $factory) {
@@ -244,6 +251,7 @@ function mod_subcourse_core_calendar_provide_event_action(calendar_event $event,
  * See {@see get_array_of_activities()} in course/lib.php
  *
  * @param object $coursemodule
+ *
  * @return cached_cm_info info
  * @throws dml_exception
  * @throws moodle_exception
@@ -251,8 +259,7 @@ function mod_subcourse_core_calendar_provide_event_action(calendar_event $event,
 function subcourse_get_coursemodule_info($coursemodule) {
     global $DB;
 
-    $subcourse = $DB->get_record('subcourse', ['id' => $coursemodule->instance],
-        'id, name, intro, introformat, instantredirect, blankwindow, coursepageprintgrade, coursepageprintprogress');
+    $subcourse = $DB->get_record('subcourse', ['id' => $coursemodule->instance]);
 
     if (!$subcourse) {
         return null;
@@ -275,9 +282,15 @@ function subcourse_get_coursemodule_info($coursemodule) {
         $info->content = format_module_intro('subcourse', $subcourse, $coursemodule->id, false);
     }
 
-    $info->completionpassgrade = true;
-    $info->downloadcontent = false;
-    $info->lang = false;
+    if ($coursemodule->completion == COMPLETION_TRACKING_AUTOMATIC) {
+        $info->customdata->customcompletionrules = [
+            'completionrefcourse' => $subcourse->completioncourse,
+        ];
+    }
+
+    //$info->completionpassgrade = true;
+    //$info->downloadcontent = false;
+    //$info->lang = false;
 
     return $info;
 }
@@ -287,8 +300,10 @@ function subcourse_get_coursemodule_info($coursemodule) {
  * Create or update the grade item for given subcourse
  *
  * @category grade
+ *
  * @param object $subcourse object
- * @param mixed $grades optional array/object of grade(s); 'reset' means reset grades in gradebook
+ * @param mixed $grades     optional array/object of grade(s); 'reset' means reset grades in gradebook
+ *
  * @return int 0 if ok, error code otherwise
  */
 function subcourse_grade_item_update($subcourse, $grades = null) {
@@ -311,8 +326,8 @@ function subcourse_grade_item_update($subcourse, $grades = null) {
  * Update activity grades.
  *
  * @param stdClass $subcourse subcourse record
- * @param int $userid specific user only, 0 means all
- * @param bool $nullifnone - not used
+ * @param int $userid         specific user only, 0 means all
+ * @param bool $nullifnone    - not used
  */
 function subcourse_update_grades($subcourse, $userid = 0, $nullifnone = true) {
     global $CFG;
@@ -330,4 +345,86 @@ function subcourse_update_grades($subcourse, $userid = 0, $nullifnone = true) {
     } else {
         return subcourse_grade_item_update($subcourse);
     }
+}
+
+/**
+ * Callback which returns human-readable strings describing the active completion custom rules for the module instance.
+ *
+ * @param cm_info|stdClass $cm object with fields ->completion and ->customdata['customcompletionrules']
+ *
+ * @return array $descriptions the array of descriptions for the custom rules.
+ */
+function mod_subcourse_get_completion_active_rule_descriptions($cm) {
+    if (empty($cm->customdata['customcompletionrules']) || $cm->completion != COMPLETION_TRACKING_AUTOMATIC) {
+        return [];
+    }
+
+    $descriptions = [];
+    $completionrefcourse = $cm->customdata['customcompletionrules']['completionrefcourse'] ?? 0;
+    $descriptions[] = "Requer {$completionrefcourse} %";
+    return $descriptions;
+}
+
+/**
+ * Sets the automatic completion state for this database item based on the count of on its entries.
+ *
+ * @param object $data   The data object for this activity
+ * @param object $course Course
+ * @param object $cm     course-module
+ *
+ * @throws moodle_exception
+ */
+function subcourse_update_completion_state($data, $course, $cm) {
+
+    // If completion option is enabled, evaluate it and return true/false.
+    $completion = new completion_info($course);
+    if ($data->completionrefcourse && $completion->is_enabled($cm)) {
+        $numentries = data_numentries($data);
+        // Check the number of entries required against the number of entries already made.
+        if ($numentries >= $data->completionrefcourse) {
+            $completion->update_state($cm, COMPLETION_COMPLETE);
+        } else {
+            $completion->update_state($cm, COMPLETION_INCOMPLETE);
+        }
+    }
+}
+
+/**
+ * Obtains the automatic completion state for this database item based on any conditions
+ * on its settings. The call for this is in completion lib where the modulename is appended
+ * to the function name. This is why there are unused parameters.
+ *
+ * @param stdClass $course     Course
+ * @param cm_info|stdClass $cm course-module
+ * @param int $userid          User ID
+ * @param bool $type           Type of comparison (or/and; can be used as return value if no conditions)
+ *
+ * @return bool True if completed, false if not, $type if conditions not set.
+ * @throws dml_exception
+ */
+function subcourse_get_completion_state($course, $cm, $userid, $type) {
+    global $DB, $PAGE;
+
+    // No need to call debugging here. Deprecation debugging notice already being called in \completion_info::internal_get_state().
+
+    $result = $type; // Default return value
+    // Get data details.
+    if (isset($PAGE->cm->id) && $PAGE->cm->id == $cm->id) {
+        $data = $PAGE->activityrecord;
+    } else {
+        $data = $DB->get_record('data', ['id' => $cm->instance], '*', MUST_EXIST);
+    }
+    // If completion option is enabled, evaluate it and return true/false.
+    if ($data->completionrefcourse) {
+
+        $numentries = 10;
+
+        // Check the number of entries required against the number of entries already made.
+        if ($numentries >= $data->completionrefcourse) {
+            $result = true;
+        } else {
+            $result = false;
+        }
+    }
+    return $result;
 }

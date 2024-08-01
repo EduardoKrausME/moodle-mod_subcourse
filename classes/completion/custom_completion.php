@@ -31,6 +31,7 @@ class custom_completion extends \core_completion\activity_custom_completion {
      * Returns completion state of the custom completion rules
      *
      * @param string $rule
+     *
      * @return integer
      * @throws \dml_exception
      */
@@ -41,16 +42,6 @@ class custom_completion extends \core_completion\activity_custom_completion {
         $this->validate_rule($rule);
 
         $subcourse = $DB->get_record('subcourse', ['id' => $this->cm->instance], 'id,refcourse,completioncourse', MUST_EXIST);
-
-        if (empty($subcourse->completioncourse)) {
-            // The rule not enabled, return early.
-            return COMPLETION_COMPLETE;
-        }
-
-        if (empty($subcourse->refcourse)) {
-            // Misconfigured subcourse instance, behave as if was not enabled.
-            return COMPLETION_COMPLETE;
-        }
 
         // Check if the referenced course is completed.
         $coursecompletion = new \completion_completion();
@@ -66,7 +57,7 @@ class custom_completion extends \core_completion\activity_custom_completion {
      * @return array
      */
     public static function get_defined_custom_rules(): array {
-        return ['completioncourse'];
+        return ['completionrefcourse'];
     }
 
     /**
@@ -76,7 +67,7 @@ class custom_completion extends \core_completion\activity_custom_completion {
      * @throws \coding_exception
      */
     public function get_custom_rule_descriptions(): array {
-        return ['completioncourse' => get_string('completioncourse', 'subcourse')];
+        return ['completionrefcourse' => get_string('completionrefcourse', 'subcourse')];
     }
 
     /**
@@ -85,6 +76,11 @@ class custom_completion extends \core_completion\activity_custom_completion {
      * @return array
      */
     public function get_sort_order(): array {
-        return ['completioncourse'];
+        return [
+            'completionview',
+            'completionusegrade',
+            'completionpassgrade',
+            'completionrefcourse',
+        ];
     }
 }

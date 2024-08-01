@@ -87,6 +87,10 @@ $string['completioncourse'] = 'Course completion required';
 $string['completioncourse_help'] = 'If enabled, the activity is considered complete when the student completes the referenced course.';
 $string['completioncourse_text'] = 'Students must complete the referenced course to complete this activity.';
 
+$string['completionrefcourse'] = 'Course completion required';
+$string['completionrefcourse_help'] = 'If enabled, the activity is considered complete when the student completes the referenced course.';
+$string['completionrefcourse_text'] = 'Students must complete the referenced course to complete this activity.';
+
 
 // Deprecated and no longer used.
 $string['gotocoursename'] = 'Go to the course <a href="{$a->href}">{$a->name}</a>';

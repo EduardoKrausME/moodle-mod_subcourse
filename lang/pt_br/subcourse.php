@@ -33,3 +33,7 @@ $string['settings:courseenrolhide_desc'] = 'Caso marcado, este curso será ocult
 $string['completioncourse'] = 'Requer a conclusão do curso';
 $string['completioncourse_help'] = 'Se habilitado, a atividade é considerada concluída quando o estudante concluir o curso referenciado.';
 $string['completioncourse_text'] = 'Os estudantes devem concluir o curso referenciado para concluir esta atividade.';
+
+$string['completionrefcourse'] = 'Requer a conclusão do curso';
+$string['completionrefcourse_help'] = 'Se habilitado, a atividade é considerada concluída quando o estudante concluir o curso referenciado.';
+$string['completionrefcourse_text'] = 'Os estudantes devem concluir o curso referenciado para concluir esta atividade.';
