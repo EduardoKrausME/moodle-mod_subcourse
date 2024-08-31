@@ -41,7 +41,7 @@ class custom_completion extends \core_completion\activity_custom_completion {
 
         $this->validate_rule($rule);
 
-        $subcourse = $DB->get_record('subcourse', ['id' => $this->cm->instance], 'id,refcourse,completioncourse', MUST_EXIST);
+        $subcourse = $DB->get_record('subcourse', ['id' => $this->cm->instance]);
 
         // Check if the referenced course is completed.
         $coursecompletion = new \completion_completion();
