@@ -122,9 +122,6 @@ $instantredirect = optional_param('instantredirect', false, PARAM_INT);
 if ($refcourse && ($subcourse->instantredirect || $instantredirect)) {
     // These three variables are used in the theme_degrade and theme_boost_magnific...
     // to create the Back to course button.
-    $_SESSION['return_course_id'] = $course->id;
-    $_SESSION['return_course_name'] = $course->fullname;
-    $_SESSION['refcourse_course_id'] = $refcourse->id;
 
     redirect(new moodle_url('/course/view.php', ['id' => $refcourse->id]));
 } else if ($refcourse) {
