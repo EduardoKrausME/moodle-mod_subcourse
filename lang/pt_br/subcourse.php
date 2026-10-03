@@ -23,7 +23,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+defined('MOODLE_INTERNAL') || die;
 
 $string['completioncourse'] = 'Requer a conclusão do curso';
 $string['completioncourse_help'] = 'Se habilitado, a atividade é considerada concluída quando o estudante concluir o curso referenciado.';

@@ -26,7 +26,7 @@ namespace mod_subcourse;
 
 use completion_info;
 
-defined('MOODLE_INTERNAL') || die();
+defined('MOODLE_INTERNAL') || die;
 
 require_once($CFG->dirroot . '/mod/subcourse/locallib.php');
 

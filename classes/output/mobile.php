@@ -31,7 +31,7 @@ use core_external\util;
 use local_kopere_dashboard\util\enroll_util;
 use moodle_url;
 
-defined('MOODLE_INTERNAL') || die();
+defined('MOODLE_INTERNAL') || die;
 
 require_once($CFG->dirroot . '/mod/subcourse/locallib.php');
 

@@ -24,7 +24,7 @@
 
 namespace mod_subcourse\external;
 
-defined('MOODLE_INTERNAL') || die();
+defined('MOODLE_INTERNAL') || die;
 
 require_once($CFG->libdir . '/externallib.php');
 

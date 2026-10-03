@@ -30,7 +30,7 @@ use completion_info;
 use context_course;
 use moodle_exception;
 
-defined('MOODLE_INTERNAL') || die();
+defined('MOODLE_INTERNAL') || die;
 
 require_once($CFG->dirroot . '/mod/subcourse/locallib.php');
 
