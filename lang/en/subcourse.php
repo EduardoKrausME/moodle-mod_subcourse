@@ -27,6 +27,12 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['blankwindow'] = 'Open in a new window';
 $string['blankwindow_help'] = 'When selected, the link will open the referenced course in a new browser window.';
+$string['completioncourse'] = 'Course completion required';
+$string['completioncourse_help'] = 'If enabled, the activity is considered complete when the student completes the referenced course.';
+$string['completioncourse_text'] = 'Students must complete the referenced course to complete this activity.';
+$string['completionrefcourse'] = 'Course completion required';
+$string['completionrefcourse_help'] = 'If enabled, the activity is considered complete when the student completes the referenced course.';
+$string['completionrefcourse_text'] = 'Students must complete the referenced course to complete this activity.';
 $string['currentgrade'] = 'Current grade: {$a}';
 $string['currentprogress'] = 'Progress: {$a}%';
 $string['displayoption:coursepageprintgrade'] = 'Display grade from referenced course on course page';
@@ -42,6 +48,7 @@ $string['fetchgradesmode_help'] = 'Depending on the gradebook setup in the refer
 * Real values - the real value of the final grade in the referenced is fetched as an activity grade in this subcourse. If there are some excluded grades in the referenced course, then the percentual final grade calculated in the referenced course may not match the percentage in the subcourse activity.
 * Percentual values - the final grade received in the referenced course is recalculated so that the percentage displayed in the referenced course matches the percentage displayed in this subcourse activity. If there are some excluded grades in the referenced course, the actual real grade value may not match.';
 $string['fetchnow'] = 'Fetch grades now';
+$string['gotocoursename'] = 'Go to the course <a href="{$a->href}">{$a->name}</a>';
 $string['gotorefcourse'] = 'Go to {$a}';
 $string['gotorefcoursegrader'] = 'All grades in {$a}';
 $string['gotorefcoursemygrades'] = 'My grades in {$a}';
@@ -67,14 +74,14 @@ You need to be a teacher in the course to have it listed here. You may need to a
 $string['refcoursecurrent'] = 'Keep current reference';
 $string['refcourselabel'] = 'Fetch grades from';
 $string['refcoursenull'] = 'No referenced course configured';
+$string['settings:courseenrolhide'] = 'Hide this new course?';
+$string['settings:courseenrolhide_desc'] = 'If checked, this course will be hidden from the My Courses page';
+$string['settings:coursepageenrol'] = 'Automatically enroll?';
+$string['settings:coursepageenrol_desc'] = 'If checked, the student is automatically enrolled in the destination course before being redirected';
 $string['settings:coursepageprintgrade'] = 'Grade on course page';
 $string['settings:coursepageprintgrade_desc'] = 'Display grade from referenced course on course page.';
 $string['settings:coursepageprintprogress'] = 'Progress on course page';
 $string['settings:coursepageprintprogress_desc'] = 'Display progress from referenced course on course page.';
-$string['settings:coursepageenrol'] = 'Automatically enroll?';
-$string['settings:coursepageenrol_desc'] = 'If checked, the student is automatically enrolled in the destination course before being redirected';
-$string['settings:courseenrolhide'] = 'Hide this new course?';
-$string['settings:courseenrolhide_desc'] = 'If checked, this course will be hidden from the My Courses page';
 $string['subcourse:addinstance'] = 'Add a new subcourse';
 $string['subcourse:begraded'] = 'Receive grade from the referenced course';
 $string['subcourse:fetchgrades'] = 'Fetch grades manually from the referenced course';
@@ -82,15 +89,3 @@ $string['subcourse:view'] = 'View subcourse activity';
 $string['subcoursename'] = 'Subcourse name';
 $string['taskcheckcompletedrefcourses'] = 'Check referenced courses completion';
 $string['taskfetchgrades'] = 'Fetch subcourse grades';
-
-$string['completioncourse'] = 'Course completion required';
-$string['completioncourse_help'] = 'If enabled, the activity is considered complete when the student completes the referenced course.';
-$string['completioncourse_text'] = 'Students must complete the referenced course to complete this activity.';
-
-$string['completionrefcourse'] = 'Course completion required';
-$string['completionrefcourse_help'] = 'If enabled, the activity is considered complete when the student completes the referenced course.';
-$string['completionrefcourse_text'] = 'Students must complete the referenced course to complete this activity.';
-
-
-// Deprecated and no longer used.
-$string['gotocoursename'] = 'Go to the course <a href="{$a->href}">{$a->name}</a>';
